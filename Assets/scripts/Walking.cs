@@ -3,10 +3,11 @@ using UnityEngine;
 public class WalkingCharacter : MonoBehaviour
 {
     public float speed;
+    public float collisionBoxY;
+    public Vector2 collisionSize;
+    public LayerMask groundLayer;
     private float maxSpeedToWalk; // Max speed for which walking force should be applied
-    private float speedModifier = 1;
-    private float groundCheckDistance = 0.1f;
-    private bool falling = true;
+    private float speedModifier = 5; // Controls both horsepower and direction
 
     private Rigidbody2D rb;
     private Collider2D collider;
@@ -24,22 +25,21 @@ public class WalkingCharacter : MonoBehaviour
     void FixedUpdate()
     {
         // Check if the velocity isn't too high and it is on the ground
-        if (rb.linearVelocity.magnitude <= maxSpeedToWalk && !falling)
+        if (rb.linearVelocity.magnitude <= maxSpeedToWalk && !isFalling())
         {
             rb.AddForce(new Vector2(speed * speedModifier, 0));
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public bool isFalling()
     {
-        if (other.GetContact(0).normal == Vector2.up)
-        {
-            falling = false;
-        }
+        return !Physics2D.BoxCast(transform.position, collisionSize, 0, -transform.up, collisionBoxY, groundLayer);
     }
 
-    private void OnCollisionExit2D(Collision2D other)
+    // Draw the ground collider
+    // https://www.youtube.com/watch?v=P_6W-36QfLA&t=26s
+    private void OnDrawGizmos()
     {
-        falling = true;
+        Gizmos.DrawWireCube(transform.position - transform.up * collisionBoxY, collisionSize);
     }
 }
