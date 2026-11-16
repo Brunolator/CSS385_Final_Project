@@ -23,7 +23,7 @@ public class WalkingCharacter : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        // TODO: make it only add force if on ground
+        // Check if the velocity isn't too high and it is on the ground
         if (rb.linearVelocity.magnitude <= maxSpeedToWalk && !falling)
         {
             rb.AddForce(new Vector2(speed * speedModifier, 0));
