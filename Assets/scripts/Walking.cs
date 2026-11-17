@@ -10,17 +10,18 @@ public class Walking : MonoBehaviour
     private float maxSpeedToWalk; // Max speed for which walking force should be applied
     private float speedModifier = 5; // Controls both horsepower and direction
     private bool isCurrentlyWalking = true;
-
     private Rigidbody2D rb;
     private Collider2D collider;
+    private LevelManager levelManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        maxSpeedToWalk = speed;
         rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
+        levelManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelManager>();
         rb.freezeRotation = true;
-        maxSpeedToWalk = speed;
     }
 
     // Update is called once per frame
@@ -45,6 +46,7 @@ public class Walking : MonoBehaviour
         if (collision.gameObject.CompareTag(stopWalkingIfCollidesWithTag))
         {
             isCurrentlyWalking = false;
+            levelManager.onCharacterReachGoal();
         }
     }
 
