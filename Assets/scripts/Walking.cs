@@ -1,6 +1,8 @@
+// For objects that walk when touching the ground, like characters
+
 using UnityEngine;
 
-public class Walking : MonoBehaviour
+public class Walking : Simulated
 {
     public float speed;
     public float collisionBoxY;
@@ -11,7 +13,6 @@ public class Walking : MonoBehaviour
     private float speedModifier = 5; // Controls both horsepower and direction
     private bool isCurrentlyWalking = true;
     private Rigidbody2D rb;
-    private Collider2D collider;
     private LevelManager levelManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -19,7 +20,6 @@ public class Walking : MonoBehaviour
     {
         maxSpeedToWalk = speed;
         rb = GetComponent<Rigidbody2D>();
-        collider = GetComponent<Collider2D>();
         levelManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelManager>();
         rb.freezeRotation = true;
     }
@@ -27,11 +27,29 @@ public class Walking : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (Physics2D.simulationMode == SimulationMode2D.Script)
+        {
+            // Do nothing if not in simulation mode
+            return;
+        }
+
         // Check if the velocity isn't too high and it is on the ground
         if (isCurrentlyWalking && rb.linearVelocity.magnitude <= maxSpeedToWalk && !isFalling())
         {
             rb.AddForce(new Vector2(speed * speedModifier, 0));
         }
+    }
+
+
+    public override void StartSimulation()
+    {
+        base.StartSimulation();
+    }
+
+
+    public override void StopSimulation()
+    {
+        base.StopSimulation();
     }
 
     public bool isFalling()
