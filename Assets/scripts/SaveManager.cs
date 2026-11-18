@@ -4,25 +4,33 @@ using UnityEngine;
 
 public static class SaveManager
 {
+    // get persistent data path and combine with save.json
   static string SavePath => Path.Combine(Application.persistentDataPath, "save.json");
+  // keep track of save data object
   static SaveData data;
+  // keep track of levels by level name
   static Dictionary<string, LevelData> mapToLevel;
 
   public static void Load()
    {
+    // ensure there is always a savedata object that exists
         try
         {
+            // see if save data file exists, if yes, load it in, else make a new save data object
             data = File.Exists(SavePath) ? JsonUtility.FromJson<SaveData>(File.ReadAllText(SavePath)) : new SaveData();
         } catch
         {
+            // if attempting to load in fails, make a new save data object instead
             data = new SaveData();
         }
+        // fill dictionary with level names and level data
         mapToLevel = new Dictionary<string, LevelData>();
         foreach (var l in data.levels)
         {
             mapToLevel[l.levelName] = l;
         }
     }
+    // prevents an attempt to write to an undefined SaveData object
     static void EnsureLoaded(){
         if(data == null)
         {
