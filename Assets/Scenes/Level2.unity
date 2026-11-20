@@ -1216,6 +1216,7 @@ GameObject:
   - component: {fileID: 1239773618}
   - component: {fileID: 1239773621}
   - component: {fileID: 1239773622}
+  - component: {fileID: 1239773623}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -1373,6 +1374,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 132195803ac5c49f19ea177625eaee14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimulatedBall
+--- !u!114 &1239773623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239773617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d3ab15fc970294f86c87bc1b0da523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Simulated
 --- !u!1 &1532782300
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,7 +1501,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -621, y: 304}
+  m_AnchoredPosition: {x: -388, y: 228}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1690006408
@@ -1761,7 +1774,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -602, y: -313}
+  m_AnchoredPosition: {x: -380, y: -231}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1939194499
