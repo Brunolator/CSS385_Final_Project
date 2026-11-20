@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7093205715580218293}
   - component: {fileID: 98692231127665752}
   - component: {fileID: 5904187309085104856}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: b5bb00ed050d0074c9635eca0ffd3b57, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
