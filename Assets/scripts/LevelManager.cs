@@ -3,6 +3,8 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     Simulated[] simulatedObjects;
+    // win text
+    public GameObject winText;
 
     void Start()
     {
@@ -29,6 +31,11 @@ public class LevelManager : MonoBehaviour
             simulatedObjects[i].StopSimulation();
         }
         Physics2D.simulationMode = SimulationMode2D.Script;
+        // hide win text
+        if (winText != null)
+        {
+            winText.SetActive(false);
+        } 
     }
 
     // Save the current level state to hard disc
@@ -41,5 +48,10 @@ public class LevelManager : MonoBehaviour
     public void onCharacterReachGoal()
     {
         Debug.Log("you win");
+        // display win text
+        if(winText != null)
+        {
+            winText.SetActive(true);
+        }
     }
 }
