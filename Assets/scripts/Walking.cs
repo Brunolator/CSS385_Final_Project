@@ -9,11 +9,11 @@ public class Walking : Simulated
     public Vector2 collisionSize;
     public LayerMask groundLayer;
     public string stopWalkingIfCollidesWithTag;
-    private float maxSpeedToWalk; // Max speed for which walking force should be applied
-    private float speedModifier = 5; // Controls both horsepower and direction
-    private bool isCurrentlyWalking = true;
     private Rigidbody2D rb;
     private LevelManager levelManager;
+    private float maxSpeedToWalk; // Max speed for which walking force should be applied
+    private float speedModifier = 10; // Controls both horsepower and direction
+    private bool isCurrentlyWalking = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,12 +40,10 @@ public class Walking : Simulated
         }
     }
 
-
     public override void StartSimulation()
     {
         base.StartSimulation();
     }
-
 
     public override void StopSimulation()
     {
@@ -64,7 +62,7 @@ public class Walking : Simulated
         if (collision.gameObject.CompareTag(stopWalkingIfCollidesWithTag))
         {
             isCurrentlyWalking = false;
-            levelManager.onCharacterReachGoal();
+            levelManager.OnGoalMet();
         }
     }
 

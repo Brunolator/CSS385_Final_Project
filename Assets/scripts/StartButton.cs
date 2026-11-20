@@ -1,6 +1,6 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 public class StartButton : MonoBehaviour
 {
     public LevelManager lvlManager;
@@ -20,22 +20,23 @@ public class StartButton : MonoBehaviour
         // switch from running to stopped
         if (running)
         {
-             lvlManager.StopSimulation();
-             running = false;
-             if(buttonLabel != null)
+            lvlManager.StopSimulation();
+            running = false;
+            if (buttonLabel != null)
             {
                 buttonLabel.text = "Start";
             }
-        } else
+        }
+        else
         {
             // switch from stopped to running
             lvlManager.StartSimulation();
-             running = true; 
-            if(buttonLabel != null)
+            running = true;
+            if (buttonLabel != null)
             {
                 buttonLabel.text = "Reset";
             }
         }
-        
+
     }
 }
