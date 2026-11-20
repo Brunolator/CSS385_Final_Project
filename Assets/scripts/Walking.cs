@@ -62,7 +62,7 @@ public class Walking : Simulated
         if (collision.gameObject.CompareTag(stopWalkingIfCollidesWithTag))
         {
             isCurrentlyWalking = false;
-            levelManager.onCharacterReachGoal();
+            levelManager.OnGoalMet();
         }
     }
 

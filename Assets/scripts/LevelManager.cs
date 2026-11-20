@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -35,7 +36,13 @@ public class LevelManager : MonoBehaviour
         if (winText != null)
         {
             winText.SetActive(false);
-        } 
+        }
+    }
+
+    // Switch to the main menu
+    public void ExitToMenu()
+    {
+        SceneManager.LoadScene("LevelSelect");
     }
 
     // Save the current level state to hard disc
@@ -45,11 +52,11 @@ public class LevelManager : MonoBehaviour
     }*/
 
     // To be called on win condition
-    public void onCharacterReachGoal()
+    public void OnGoalMet()
     {
         Debug.Log("you win");
         // display win text
-        if(winText != null)
+        if (winText != null)
         {
             winText.SetActive(true);
         }

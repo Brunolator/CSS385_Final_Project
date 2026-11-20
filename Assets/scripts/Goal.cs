@@ -12,7 +12,7 @@ public class Goal : Simulated
         if (!other.TryGetComponent(out Simulated ball)) return;
 
         goalReached = true;
-        lvlManager.onCharacterReachGoal();
+        lvlManager.OnGoalMet();
     }
 
     // reset all instances of the goal being reached
