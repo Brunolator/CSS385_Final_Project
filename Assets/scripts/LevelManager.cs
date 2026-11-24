@@ -6,7 +6,7 @@ public class LevelManager : MonoBehaviour
     Simulated[] simulatedObjects;
     // win text
     public GameObject winText;
-    public static bool isRunning{get; private set;}
+    public static bool isRunning { get; private set; }
 
     void Start()
     {
@@ -58,7 +58,6 @@ public class LevelManager : MonoBehaviour
     // To be called on win condition
     public void OnGoalMet()
     {
-        Debug.Log("you win");
         // display win text
         if (winText != null)
         {
