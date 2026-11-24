@@ -835,6 +835,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WalkingCharacter1
       objectReference: {fileID: 0}
+    - target: {fileID: 5587066519284199458, guid: 7ec4dd91a0f8a65428ded5d7869e1667, type: 3}
+      propertyPath: freezeRotation
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9148255461453538538, guid: 7ec4dd91a0f8a65428ded5d7869e1667, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.5
