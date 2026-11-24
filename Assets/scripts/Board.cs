@@ -63,7 +63,7 @@ public class Board : MonoBehaviour
             Physics2D.SyncTransforms();
             Collider2D hit = Physics2D.OverlapPoint(coord);
             // set object as true and dragging
-            if (hit == collider){
+            if (hit != null && hit.attachedRigidbody == rigidbody){
                 SetSelected(true);
                 dragging = true;
                 drag = transform.position - coord;
