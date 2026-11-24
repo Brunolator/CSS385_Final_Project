@@ -46,6 +46,14 @@ public class Board : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // lock down board if simulation is running
+        if (LevelManager.isRunning)
+        {
+            if(selected) SetSelected(false);
+            dragging = false;
+            return;
+        }
+
         // get mouse coordinates
         Mouse mouse = Mouse.current;
         Vector3 coord = getMouseCoordinates();

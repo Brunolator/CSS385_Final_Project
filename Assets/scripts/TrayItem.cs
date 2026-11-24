@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class TrayItem : MonoBehaviour
 {
 
-    public GameObject boardSpawn;
+    public GameObject itemSpawn;
     public Transform spawnPoint;
     public int max = 3; 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,7 +33,7 @@ public class TrayItem : MonoBehaviour
             return;
         }
         // create new board of boardSpawn in the center 
-        GameObject board = Instantiate(boardSpawn, spawnPoint.position, spawnPoint.rotation);
+        GameObject board = Instantiate(itemSpawn, spawnPoint.position, spawnPoint.rotation);
         // reduce the amount of boards you can work with
         remaining--;
         // update display

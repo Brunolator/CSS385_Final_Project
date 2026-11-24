@@ -289,6 +289,7 @@ MonoBehaviour:
   levelName: 1-4
   notClearFlag: {fileID: 169145325}
   clearFlag: {fileID: 2141356122}
+  prereq: {fileID: 304746962}
 --- !u!58 &61728034
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -375,6 +376,7 @@ MonoBehaviour:
   levelName: 6
   notClearFlag: {fileID: 1705930722}
   clearFlag: {fileID: 1126914229}
+  prereq: {fileID: 0}
 --- !u!58 &96018904
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -540,6 +542,7 @@ MonoBehaviour:
   levelName: 5-2
   notClearFlag: {fileID: 1572882343}
   clearFlag: {fileID: 1152860532}
+  prereq: {fileID: 0}
 --- !u!58 &147613228
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -903,6 +906,7 @@ MonoBehaviour:
   levelName: 1-3
   notClearFlag: {fileID: 361340307}
   clearFlag: {fileID: 2118283857}
+  prereq: {fileID: 942645077}
 --- !u!58 &304746963
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1186,6 +1190,7 @@ MonoBehaviour:
   levelName: 2-3
   notClearFlag: {fileID: 1827878953}
   clearFlag: {fileID: 519649161}
+  prereq: {fileID: 0}
 --- !u!58 &359841462
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1548,6 +1553,7 @@ MonoBehaviour:
   levelName: 4-1
   notClearFlag: {fileID: 1334489556}
   clearFlag: {fileID: 231680463}
+  prereq: {fileID: 0}
 --- !u!58 &489700761
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2015,6 +2021,7 @@ MonoBehaviour:
   levelName: 1-2
   notClearFlag: {fileID: 401899755}
   clearFlag: {fileID: 2060039449}
+  prereq: {fileID: 1029034964}
 --- !u!58 &942645078
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2168,6 +2175,7 @@ MonoBehaviour:
   levelName: 1-1
   notClearFlag: {fileID: 1664051078}
   clearFlag: {fileID: 1697385438}
+  prereq: {fileID: 0}
 --- !u!114 &1029034965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2347,6 +2355,7 @@ MonoBehaviour:
   levelName: 1-5
   notClearFlag: {fileID: 1624182059}
   clearFlag: {fileID: 867753852}
+  prereq: {fileID: 61728033}
 --- !u!58 &1116196491
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2617,6 +2626,7 @@ MonoBehaviour:
   levelName: 5-1
   notClearFlag: {fileID: 1582528889}
   clearFlag: {fileID: 546382078}
+  prereq: {fileID: 0}
 --- !u!58 &1258807940
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3194,6 +3204,7 @@ MonoBehaviour:
   levelName: 3-2
   notClearFlag: {fileID: 266459764}
   clearFlag: {fileID: 1492384668}
+  prereq: {fileID: 0}
 --- !u!58 &1484028218
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3648,6 +3659,7 @@ MonoBehaviour:
   levelName: 2-1
   notClearFlag: {fileID: 359583207}
   clearFlag: {fileID: 1680273488}
+  prereq: {fileID: 0}
 --- !u!58 &1601558372
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4194,6 +4206,7 @@ MonoBehaviour:
   levelName: 3-1
   notClearFlag: {fileID: 1405943792}
   clearFlag: {fileID: 320617627}
+  prereq: {fileID: 0}
 --- !u!58 &1767660426
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4280,6 +4293,7 @@ MonoBehaviour:
   levelName: 4-2
   notClearFlag: {fileID: 1375277058}
   clearFlag: {fileID: 1970728492}
+  prereq: {fileID: 0}
 --- !u!58 &1781487640
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4642,6 +4656,7 @@ MonoBehaviour:
   levelName: 2-2
   notClearFlag: {fileID: 1505878012}
   clearFlag: {fileID: 398246059}
+  prereq: {fileID: 0}
 --- !u!58 &2076705818
 CircleCollider2D:
   m_ObjectHideFlags: 0

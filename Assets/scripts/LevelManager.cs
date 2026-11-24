@@ -6,12 +6,14 @@ public class LevelManager : MonoBehaviour
     Simulated[] simulatedObjects;
     // win text
     public GameObject winText;
+    public static bool isRunning{get; private set;}
 
     void Start()
     {
         // Get a list of all objects that are part of the simulation
         simulatedObjects = Object.FindObjectsByType<Simulated>();
         StopSimulation();
+        isRunning = false;
     }
 
     // Start playing the level
@@ -22,6 +24,7 @@ public class LevelManager : MonoBehaviour
             simulatedObjects[i].StartSimulation();
         }
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
+        isRunning = true;
     }
 
     // Stop playing the level
@@ -37,6 +40,7 @@ public class LevelManager : MonoBehaviour
         {
             winText.SetActive(false);
         }
+        isRunning = false;
     }
 
     // Switch to the main menu

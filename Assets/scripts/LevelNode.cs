@@ -11,6 +11,8 @@ public class LevelNode : MonoBehaviour
     // clearFlag is blue
     public GameObject clearFlag;
 
+    public LevelNode prereq;
+
     // get the current completion status from the level
     public bool isCompleted => SaveManager.IsCompleted(levelName);
 
