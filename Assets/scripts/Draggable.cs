@@ -1,3 +1,4 @@
+// Lets players drag around objects in the level
 using UnityEngine;
 using UnityEngine.InputSystem;
 
