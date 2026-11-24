@@ -14,7 +14,6 @@ public class Board : Rotatable
         {
             defaultColor = board.color;
         }
-
     }
 
     // select or deselect board

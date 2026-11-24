@@ -173,8 +173,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WalkingCharacter
   speed: 2
   collisionBoxY: 0.8
+  freezeRotation: 1
   collisionSize: {x: 0.8, y: 0.2}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  stopWalkingIfCollidesWithTag: Finish

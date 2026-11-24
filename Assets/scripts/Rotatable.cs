@@ -30,6 +30,12 @@ public class Rotatable : Draggable
     // rotate based on key input
     private void Rotate()
     {
+        // Cannot interfere with physics rotations if the level is running
+        if (LevelManager.isRunning)
+        {
+            return;
+        }
+
         // rotate object
         Keyboard keys = Keyboard.current;
         // check for left or right tilt

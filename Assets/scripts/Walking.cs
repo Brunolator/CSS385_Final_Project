@@ -8,9 +8,6 @@ public class Walking : Simulated
     public float collisionBoxY;
     public Vector2 collisionSize;
     public LayerMask groundLayer;
-    public string stopWalkingIfCollidesWithTag;
-    private Rigidbody2D rb;
-    private LevelManager levelManager;
     private float maxSpeedToWalk; // Max speed for which walking force should be applied
     private float speedModifier = 8.5f; // Controls both horsepower and direction
     private bool isCurrentlyWalking = true;
@@ -19,9 +16,6 @@ public class Walking : Simulated
     void Start()
     {
         maxSpeedToWalk = speed;
-        rb = GetComponent<Rigidbody2D>();
-        levelManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelManager>();
-        rb.freezeRotation = true;
     }
 
     // Update is called once per frame
@@ -34,9 +28,9 @@ public class Walking : Simulated
         }
 
         // Check if the velocity isn't too high and it is on the ground
-        if (isCurrentlyWalking && rb.linearVelocity.magnitude <= maxSpeedToWalk && !isFalling())
+        if (isCurrentlyWalking && body.linearVelocity.magnitude <= maxSpeedToWalk && !isFalling())
         {
-            rb.AddForce(new Vector2(speed * speedModifier, 0));
+            body.AddForce(new Vector2(speed * speedModifier, 0));
         }
     }
 
