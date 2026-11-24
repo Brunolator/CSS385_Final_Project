@@ -8,20 +8,14 @@ public class Walking : Simulated
     public float collisionBoxY;
     public Vector2 collisionSize;
     public LayerMask groundLayer;
-    public string stopWalkingIfCollidesWithTag;
-    private Rigidbody2D rb;
-    private LevelManager levelManager;
     private float maxSpeedToWalk; // Max speed for which walking force should be applied
-    private float speedModifier = 10; // Controls both horsepower and direction
+    private float speedModifier = 8.5f; // Controls both horsepower and direction
     private bool isCurrentlyWalking = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         maxSpeedToWalk = speed;
-        rb = GetComponent<Rigidbody2D>();
-        levelManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelManager>();
-        rb.freezeRotation = true;
     }
 
     // Update is called once per frame
@@ -34,9 +28,9 @@ public class Walking : Simulated
         }
 
         // Check if the velocity isn't too high and it is on the ground
-        if (isCurrentlyWalking && rb.linearVelocity.magnitude <= maxSpeedToWalk && !isFalling())
+        if (isCurrentlyWalking && body.linearVelocity.magnitude <= maxSpeedToWalk && !isFalling())
         {
-            rb.AddForce(new Vector2(speed * speedModifier, 0));
+            body.AddForce(new Vector2(speed * speedModifier, 0));
         }
     }
 
@@ -50,20 +44,15 @@ public class Walking : Simulated
         base.StopSimulation();
     }
 
+    public override void OnLevelGoalMet()
+    {
+        base.OnLevelGoalMet();
+        isCurrentlyWalking = false;
+    }
+
     public bool isFalling()
     {
         return !Physics2D.BoxCast(transform.position, collisionSize, 0, -transform.up, collisionBoxY, groundLayer);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("trigger enter " + collision.gameObject.tag);
-        // If the object touches its finish, it will stop walking
-        if (collision.gameObject.CompareTag(stopWalkingIfCollidesWithTag))
-        {
-            isCurrentlyWalking = false;
-            levelManager.OnGoalMet();
-        }
     }
 
     // Draw the ground collider
