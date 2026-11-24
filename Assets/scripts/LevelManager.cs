@@ -58,6 +58,12 @@ public class LevelManager : MonoBehaviour
     // To be called on win condition
     public void OnGoalMet()
     {
+        // Tell objects that the goal was met
+        for (int i = 0; i < simulatedObjects.Length; i++)
+        {
+            simulatedObjects[i].OnLevelGoalMet();
+        }
+
         // display win text
         if (winText != null)
         {
