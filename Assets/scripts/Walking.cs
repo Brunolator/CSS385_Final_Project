@@ -12,7 +12,7 @@ public class Walking : Simulated
     private Rigidbody2D rb;
     private LevelManager levelManager;
     private float maxSpeedToWalk; // Max speed for which walking force should be applied
-    private float speedModifier = 10; // Controls both horsepower and direction
+    private float speedModifier = 8.5f; // Controls both horsepower and direction
     private bool isCurrentlyWalking = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
