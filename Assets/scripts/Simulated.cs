@@ -32,4 +32,10 @@ public class Simulated : MonoBehaviour
         body.position = startPosition;
         transform.position = startPosition;
     }
+
+    // Called whenever the level's goal is met
+    public virtual void OnLevelGoalMet()
+    {
+
+    }
 }

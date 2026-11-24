@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // saves the overworld level status
 public class LevelNode : MonoBehaviour
@@ -28,13 +29,15 @@ public class LevelNode : MonoBehaviour
     void OnMouseDown()
     {
         // skip if level is already completed
-         if (isCompleted)
+        if (!isCompleted)
         {
-            return;
+            // toggle level as completed
+            SaveManager.CompleteLevel(levelName); // TODO: move this to on level completion
+            Refresh();
         }
-        // toggle level as completed
-        SaveManager.CompleteLevel(levelName);
-        Refresh();
+
+        // Load the scene if it exists
+        SceneManager.LoadScene("Level" + levelName);
     }
 
     // updates flag colors

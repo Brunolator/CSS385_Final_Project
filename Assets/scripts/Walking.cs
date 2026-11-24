@@ -50,20 +50,15 @@ public class Walking : Simulated
         base.StopSimulation();
     }
 
+    public override void OnLevelGoalMet()
+    {
+        base.OnLevelGoalMet();
+        isCurrentlyWalking = false;
+    }
+
     public bool isFalling()
     {
         return !Physics2D.BoxCast(transform.position, collisionSize, 0, -transform.up, collisionBoxY, groundLayer);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("trigger enter " + collision.gameObject.tag);
-        // If the object touches its finish, it will stop walking
-        if (collision.gameObject.CompareTag(stopWalkingIfCollidesWithTag))
-        {
-            isCurrentlyWalking = false;
-            levelManager.OnGoalMet();
-        }
     }
 
     // Draw the ground collider

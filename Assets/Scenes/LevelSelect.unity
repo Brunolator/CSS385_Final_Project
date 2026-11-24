@@ -883,7 +883,6 @@ GameObject:
   - component: {fileID: 304746964}
   - component: {fileID: 304746963}
   - component: {fileID: 304746962}
-  - component: {fileID: 304746965}
   m_Layer: 0
   m_Name: Level_1-3
   m_TagString: Untagged
@@ -960,19 +959,6 @@ Transform:
   - {fileID: 361340309}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &304746965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 304746961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a72483e496518b8418bbe394096a9976, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SceneSwitcher
-  sceneName: Level1-3
 --- !u!1 &320617627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1998,7 +1984,6 @@ GameObject:
   - component: {fileID: 942645079}
   - component: {fileID: 942645078}
   - component: {fileID: 942645077}
-  - component: {fileID: 942645080}
   m_Layer: 0
   m_Name: Level_1-2
   m_TagString: Untagged
@@ -2075,19 +2060,6 @@ Transform:
   - {fileID: 401899757}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &942645080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 942645076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a72483e496518b8418bbe394096a9976, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SceneSwitcher
-  sceneName: Level1-2
 --- !u!1 &1029034961
 GameObject:
   m_ObjectHideFlags: 0
@@ -2099,7 +2071,6 @@ GameObject:
   - component: {fileID: 1029034962}
   - component: {fileID: 1029034963}
   - component: {fileID: 1029034964}
-  - component: {fileID: 1029034965}
   m_Layer: 0
   m_Name: Level_1-1
   m_TagString: Untagged
@@ -2176,19 +2147,6 @@ MonoBehaviour:
   notClearFlag: {fileID: 1664051078}
   clearFlag: {fileID: 1697385438}
   prereq: {fileID: 0}
---- !u!114 &1029034965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1029034961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a72483e496518b8418bbe394096a9976, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SceneSwitcher
-  sceneName: Level1-1
 --- !u!1 &1103755802
 GameObject:
   m_ObjectHideFlags: 0
