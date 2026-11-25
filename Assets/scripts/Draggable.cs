@@ -11,8 +11,8 @@ public class Draggable : MonoBehaviour
     // Universal selected object
     static Draggable currentlySelected;
 
-    // Specific object variables
-    Collider2D collider;
+    // Object-specific variables
+    Collider2D[] colliders;
     Camera cam;
 
     // current state
@@ -23,7 +23,7 @@ public class Draggable : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Awake()
     {
-        collider = GetComponent<Collider2D>();
+        colliders = GetComponents<Collider2D>();
         cam = Camera.main;
 
         // Set sprite renderer and color
@@ -55,7 +55,7 @@ public class Draggable : MonoBehaviour
             Physics2D.SyncTransforms();
             Collider2D hit = Physics2D.OverlapPoint(coord);
             // Get whether I am selected
-            SetSelected(hit == collider);
+            SetSelected(HasCollider(hit));
             // If I am selected, begin dragging
             if (selected)
             {
@@ -105,6 +105,18 @@ public class Draggable : MonoBehaviour
         {
             currentlySelected = null;
         }
+    }
+
+    private bool HasCollider(Collider2D collider)
+    {
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (collider == colliders[i])
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected Vector3 GetMouseCoordinates()
