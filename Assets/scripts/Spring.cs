@@ -18,9 +18,9 @@ public class Spring : MonoBehaviour
         baseScale = transform.localScale;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Rigidbody2D otherBody = collision.rigidbody;
+        Rigidbody2D otherBody = other.attachedRigidbody;
         if (otherBody == null)
         {
             return;
