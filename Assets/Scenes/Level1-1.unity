@@ -1342,7 +1342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a863144a9f34a472ba444d31356271b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrayItem
-  itemSpawn: {fileID: 1869450461368529560, guid: 21775718588494f16b185dc87191cfbc, type: 3}
+  itemSpawn: {fileID: 3671101694024382145, guid: c52210db7a847064d880df2140517089, type: 3}
   spawnPoint: {fileID: 249322420}
   max: 1
 --- !u!114 &1498251881
