@@ -21,7 +21,7 @@ public class Rotatable : Draggable
     {
         base.Update();
 
-        if (selected)
+        if (this == currentlySelected)
         {
             Rotate();
         }
