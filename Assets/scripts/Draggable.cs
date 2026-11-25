@@ -4,6 +4,10 @@ using UnityEngine.InputSystem;
 
 public class Draggable : MonoBehaviour
 {
+    SpriteRenderer spriteRenderer;
+    Color defaultColor = Color.white;
+    public Color selectColor = Color.yellow;
+
     // Universal selected object
     static Draggable currentlySelected;
 
@@ -21,6 +25,13 @@ public class Draggable : MonoBehaviour
     {
         collider = GetComponent<Collider2D>();
         cam = Camera.main;
+
+        // Set sprite renderer and color
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            defaultColor = spriteRenderer.color;
+        }
     }
 
     // Update is called once per frame
@@ -69,7 +80,16 @@ public class Draggable : MonoBehaviour
     // select or deselect board
     protected virtual void SetSelected(bool value)
     {
-        // if selected
+        // set current as selected 
+        selected = value;
+
+        // color board to indicate it's being used
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = selected ? selectColor : defaultColor;
+        }
+
+        // if setting selected
         if (value)
         {
             // if this is not the current object, deselect
@@ -79,12 +99,12 @@ public class Draggable : MonoBehaviour
             }
             currentlySelected = this;
         }
+
+        // if setting unselected, unselect me
         else if (currentlySelected == this)
         {
             currentlySelected = null;
         }
-        // set current as selected 
-        selected = value;
     }
 
     protected Vector3 GetMouseCoordinates()

@@ -18,17 +18,16 @@ public class Spring : MonoBehaviour
         baseScale = transform.localScale;
     }
 
-
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        Rigidbody2D otherBody = other.attachedRigidbody;
-        if(otherBody == null)
+        Rigidbody2D otherBody = collision.rigidbody;
+        if (otherBody == null)
         {
             return;
         }
-        if(otherBody.bodyType != RigidbodyType2D.Dynamic)
+        if (otherBody.bodyType != RigidbodyType2D.Dynamic)
         {
-             return;
+            return;
         }
         Vector2 up = transform.up;
         Vector2 velocity = otherBody.linearVelocity;
@@ -38,28 +37,32 @@ public class Spring : MonoBehaviour
 
         timer = 0f;
     }
+
     // Update is called once per frame
     void Update()
     {
-        if(timer < 0f)
+        if (timer < 0f)
         {
             return;
         }
 
-        timer +=  Time.deltaTime;
+        timer += Time.deltaTime;
 
         float offset;
-        
-        if(timer < squashTime)
+
+        if (timer < squashTime)
         {
-            offset = Mathf.Lerp(0f, -squash, timer/squashTime);
-        } else if (timer < squashTime + stretchTime)
+            offset = Mathf.Lerp(0f, -squash, timer / squashTime);
+        }
+        else if (timer < squashTime + stretchTime)
         {
             offset = Mathf.Lerp(-squash, stretch, (timer - squashTime) / stretchTime);
-        } else if (timer < squashTime + stretchTime + settleTime)
+        }
+        else if (timer < squashTime + stretchTime + settleTime)
         {
             offset = Mathf.Lerp(stretch, 0f, (timer - squashTime - stretchTime) / stretchTime);
-        } else
+        }
+        else
         {
             offset = 0f;
             timer = -1f;
