@@ -1841,6 +1841,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   winText: {fileID: 121378109}
+  levelName: 1-3
 --- !u!1 &1749832970
 GameObject:
   m_ObjectHideFlags: 0

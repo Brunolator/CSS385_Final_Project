@@ -8,6 +8,8 @@ public class LevelManager : MonoBehaviour
     public GameObject winText;
     public static bool isRunning { get; private set; }
 
+    public string levelName;
+
     void Start()
     {
         // Get a list of all objects that are part of the simulation
@@ -68,6 +70,10 @@ public class LevelManager : MonoBehaviour
         if (winText != null)
         {
             winText.SetActive(true);
+        }
+        if(levelName != null)
+        {
+            SaveManager.CompleteLevel(levelName);
         }
     }
 }

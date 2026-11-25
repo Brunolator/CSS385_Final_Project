@@ -12,6 +12,7 @@ public class LevelNode : MonoBehaviour
     // clearFlag is blue
     public GameObject clearFlag;
 
+    public GameObject lockedFlag;
     public LevelNode prereq;
 
     // get the current completion status from the level
@@ -29,21 +30,41 @@ public class LevelNode : MonoBehaviour
     void OnMouseDown()
     {
         // skip if level is already completed
-        if (!isCompleted)
+        if (isCompleted)
         {
-            // toggle level as completed
-            SaveManager.CompleteLevel(levelName); // TODO: move this to on level completion
             Refresh();
         }
-
-        // Load the scene if it exists
-        SceneManager.LoadScene("Level" + levelName);
+        if(prereq != null)
+        {
+            Debug.Log(prereq.levelName);
+        }
+        if ((levelName == "1-1")|| ((prereq != null) && SaveManager.IsCompleted(prereq.levelName)))
+        {
+             // Load the scene if it exists
+            SceneManager.LoadScene("Level" + levelName);
+        }
+       
     }
 
     // updates flag colors
     public void Refresh()
     {
-        notClearFlag.SetActive(!isCompleted);
-        clearFlag.SetActive(isCompleted);
+        if ((prereq == null && levelName != "1-1")|| (prereq != null && !SaveManager.IsCompleted(prereq.levelName)))
+        {
+            lockedFlag.SetActive(true);
+            notClearFlag.SetActive(false);
+            clearFlag.SetActive(false);
+        } else if (!isCompleted)
+        {
+            lockedFlag.SetActive(false);
+            notClearFlag.SetActive(true);
+            clearFlag.SetActive(false);
+        } else
+        {
+            lockedFlag.SetActive(false);
+            notClearFlag.SetActive(false);
+            clearFlag.SetActive(true);
+        }
+        
     }
 }
