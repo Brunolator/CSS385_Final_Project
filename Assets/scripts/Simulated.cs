@@ -9,12 +9,15 @@ public class Simulated : MonoBehaviour
     protected Quaternion startRotation;
     public bool freezeRotation;
 
-    void Awake()
+    protected virtual void Awake()
     {
         // get object components and starting position
         body = GetComponent<Rigidbody2D>();
         startPosition = transform.position;
-        body.freezeRotation = freezeRotation;
+        if (body != null)
+        {
+            body.freezeRotation = freezeRotation;
+        }
     }
 
     // Save initial object state and start simulating physics
@@ -23,25 +26,28 @@ public class Simulated : MonoBehaviour
         // set object physics to moveable
         startPosition = transform.position;
         startRotation = transform.rotation;
-        body.bodyType = RigidbodyType2D.Dynamic;
+        if (body != null)
+        {
+            body.bodyType = RigidbodyType2D.Dynamic;
+        }
     }
 
     // Stop simulating physics and return to saved object state
     public virtual void StopSimulation()
     {
         // reset object physics, position, and rotation
-        body.bodyType = RigidbodyType2D.Kinematic;
-        body.linearVelocity = Vector2.zero;
-        body.angularVelocity = 0f;
-        body.position = startPosition;
+        if (body != null)
+        {
+            body.bodyType = RigidbodyType2D.Kinematic;
+            body.linearVelocity = Vector2.zero;
+            body.angularVelocity = 0f;
+            body.position = startPosition;
+            body.rotation = startRotation.eulerAngles.z;
+        }
         transform.position = startPosition;
-        body.rotation = startRotation.eulerAngles.z;
         transform.rotation = startRotation;
     }
 
     // Called whenever the level's goal is met
-    public virtual void OnLevelGoalMet()
-    {
-
-    }
+    public virtual void OnLevelGoalMet() { }
 }
