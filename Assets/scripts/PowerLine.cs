@@ -1,30 +1,30 @@
 using UnityEngine;
 
-public class PowerLine : Simulated
+public class PowerLine : Draggable
 {
-    Transform anchor1;
-    Transform anchor2;
+    GameObject anchor1;
+    GameObject anchor2;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Awake()
     {
         base.Awake();
-        anchor1 = transform.Find("Anchor1");
-        anchor2 = transform.Find("Anchor2");
+        Transform anchor1Transform = transform.Find("Anchor1");
+        Transform anchor2Transform = transform.Find("Anchor2");
+
+        if (anchor1Transform != null)
+        {
+            anchor1 = anchor1Transform.gameObject;
+        }
+        if (anchor2Transform != null)
+        {
+            anchor2 = anchor2Transform.gameObject;
+        }
     }
 
-    void FixedUpdate()
+    protected override void Update()
     {
-        //Debug.Log("anchor1: " + anchor1.position.x);
-    }
-
-    public override void StartSimulation()
-    {
-
-    }
-
-    public override void StopSimulation()
-    {
-
+        bool dragging = anchor1.GetComponent<Draggable>().IsBeingDragged() || anchor2.GetComponent<Draggable>().IsBeingDragged();
+        Debug.Log("dragging: " + dragging);
     }
 }

@@ -61,12 +61,19 @@ public class Draggable : MonoBehaviour
         }
     }
 
+    // Updates the color based on the given value of selected
     protected void UpdateColor(bool selected)
     {
         if (spriteRenderer != null)
         {
             spriteRenderer.color = selected == this ? selectColor : defaultColor;
         }
+    }
+
+    // Returns whether this object is currently being dragged
+    public bool IsBeingDragged()
+    {
+        return this == currentlySelected && Mouse.current.leftButton.isPressed;
     }
 
     // select 1 board based on mouse coordinates
