@@ -8,13 +8,9 @@ public class Draggable : MonoBehaviour
     private Color defaultColor;
     public Color selectColor;
 
-    // Universal selected object
-    static Draggable currentlySelected;
-    private static int lastFrame = -1;
-
-    // current state
-    protected bool selected;
-    Vector3 clickOffset;
+    protected static Draggable currentlySelected; // One selected draggable at a time
+    private static int lastFrameSetSelected = -1;
+    Vector3 clickOffset; // Offset of mouse click and object coordinates
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -45,9 +41,9 @@ public class Draggable : MonoBehaviour
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             // Using frame counter to run exactly once per click among objects, set selected
-            if (lastFrame != Time.frameCount)
+            if (lastFrameSetSelected != Time.frameCount)
             {
-                lastFrame = Time.frameCount;
+                lastFrameSetSelected = Time.frameCount;
                 SetSelected();
             }
 
