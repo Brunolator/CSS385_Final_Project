@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 77861731}
   - component: {fileID: 77861732}
   - component: {fileID: 77861734}
-  - component: {fileID: 77861733}
+  - component: {fileID: 77861735}
   m_Layer: 0
   m_Name: Anchor1
   m_TagString: Untagged
@@ -292,19 +292,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &77861733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 77861730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec4a86bf8db143e489e72596219568e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Draggable
-  selectColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
 --- !u!58 &77861734
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -341,6 +328,19 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &77861735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77861730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad76c00a1a1d38439d5e59468486f14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PairDraggable
+  selectColor: {r: 0.50980395, g: 0.50980395, b: 0.50980395, a: 1}
 --- !u!1 &105254932
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,7 +658,7 @@ GameObject:
   - component: {fileID: 139529879}
   - component: {fileID: 139529882}
   - component: {fileID: 139529881}
-  - component: {fileID: 139529880}
+  - component: {fileID: 139529883}
   m_Layer: 0
   m_Name: Anchor2
   m_TagString: Untagged
@@ -681,19 +681,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 505200676}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &139529880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 139529878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec4a86bf8db143e489e72596219568e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Draggable
-  selectColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
 --- !u!58 &139529881
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -790,6 +777,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &139529883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139529878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad76c00a1a1d38439d5e59468486f14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PairDraggable
+  selectColor: {r: 0.50980395, g: 0.50980395, b: 0.50980395, a: 1}
 --- !u!1 &249322419
 GameObject:
   m_ObjectHideFlags: 0
@@ -2232,6 +2232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   winText: {fileID: 121378109}
+  levelName: 
 --- !u!1 &1749832970
 GameObject:
   m_ObjectHideFlags: 0

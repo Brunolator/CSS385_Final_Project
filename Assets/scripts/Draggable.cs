@@ -58,9 +58,9 @@ public class Draggable : MonoBehaviour
         }
     }
 
-    protected virtual void Move(Vector3 to)
+    protected virtual void Move(Vector3 dragLocation)
     {
-        transform.position = to;
+        transform.position = dragLocation;
     }
 
     // Updates the color based on the given value of selected
@@ -113,6 +113,7 @@ public class Draggable : MonoBehaviour
         currentlySelected = null;
     }
 
+    // Returns mouse click as a Vector3 so it's compatible with transform.position
     static protected Vector3 GetMouseCoordinates()
     {
         Vector3 coord = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
