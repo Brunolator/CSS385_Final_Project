@@ -5,12 +5,12 @@ public class Goal : Simulated
     public LevelManager lvlManager;
     bool goalReached;
 
-    // if goal is reached or colliding object isn't a ball, don't check for collision
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (goalReached) return;
-        if (!other.TryGetComponent(out Simulated ball)) return;
+        // if goal is reached or colliding object isn't a goal collider, don't check for collision
+        if (goalReached || !other.CompareTag("GoalCollider")) return;
 
+        // Goal is met
         goalReached = true;
         lvlManager.OnGoalMet();
     }

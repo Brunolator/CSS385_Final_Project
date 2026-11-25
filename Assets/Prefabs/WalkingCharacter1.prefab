@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5587066519284199458}
   m_Layer: 0
   m_Name: WalkingCharacter1
-  m_TagString: Untagged
+  m_TagString: GoalCollider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -171,9 +171,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7682d1ed2a8f27648a419ddb8774930b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WalkingCharacter
+  freezeRotation: 1
   speed: 2
   collisionBoxY: 0.8
-  freezeRotation: 1
   collisionSize: {x: 0.8, y: 0.2}
   groundLayer:
     serializedVersion: 2
