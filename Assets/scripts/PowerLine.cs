@@ -1,14 +1,13 @@
 using UnityEngine;
 
-public class PowerLine : Draggable
+public class PowerLine : MonoBehaviour
 {
     GameObject anchor1;
     GameObject anchor2;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
         Transform anchor1Transform = transform.Find("Anchor1");
         Transform anchor2Transform = transform.Find("Anchor2");
 
@@ -22,9 +21,8 @@ public class PowerLine : Draggable
         }
     }
 
-    protected override void Update()
+    void Update()
     {
         bool dragging = anchor1.GetComponent<Draggable>().IsBeingDragged() || anchor2.GetComponent<Draggable>().IsBeingDragged();
-        Debug.Log("dragging: " + dragging);
     }
 }
