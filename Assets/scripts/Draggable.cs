@@ -7,11 +7,9 @@ public class Draggable : MonoBehaviour
     SpriteRenderer spriteRenderer;
     private Color defaultColor;
     public Color selectColor;
-
     protected static Draggable currentlySelected; // One selected draggable at a time
     private static int lastFrameSetSelected = -1;
     Vector3 clickOffset; // Offset of mouse click and object coordinates
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Awake()
@@ -27,8 +25,7 @@ public class Draggable : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-
-        // do not drag if simulation is running
+        // do nothing if simulation is running
         if (LevelManager.isRunning)
         {
             if (this == currentlySelected) ClearSelected();
@@ -40,14 +37,14 @@ public class Draggable : MonoBehaviour
         // if mouse was just clicked
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // Using frame counter to run exactly once per click among objects, set selected
+            // Using frame counter to run exactly once per click among draggables, set selected
             if (lastFrameSetSelected != Time.frameCount)
             {
                 lastFrameSetSelected = Time.frameCount;
                 SetSelected();
             }
 
-            // If I am selected, begin dragging
+            // If I am being clicked on, save offset between mouse pointer and object coordinates
             if (this == currentlySelected)
             {
                 clickOffset = transform.position - mouseCoord;
@@ -57,8 +54,13 @@ public class Draggable : MonoBehaviour
         // if dragging is active and left click is being held, change board positions
         if (this == currentlySelected && Mouse.current.leftButton.isPressed)
         {
-            transform.position = mouseCoord + clickOffset;
+            Move(mouseCoord + clickOffset);
         }
+    }
+
+    protected virtual void Move(Vector3 to)
+    {
+        transform.position = to;
     }
 
     // Updates the color based on the given value of selected
@@ -74,6 +76,12 @@ public class Draggable : MonoBehaviour
     public bool IsBeingDragged()
     {
         return this == currentlySelected && Mouse.current.leftButton.isPressed;
+    }
+
+    // Returns whether this object is currently selected
+    public bool IsSelected()
+    {
+        return this == currentlySelected;
     }
 
     // select 1 board based on mouse coordinates

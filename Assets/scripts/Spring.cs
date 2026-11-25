@@ -3,7 +3,6 @@ using UnityEngine;
 public class Spring : MonoBehaviour
 {
     public float launchSpd = 12f;
-
     public float squash = 0.4f;
     public float stretch = 0.25f;
     public float squashTime = 0.05f;

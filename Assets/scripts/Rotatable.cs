@@ -21,6 +21,13 @@ public class Rotatable : Draggable
     {
         base.Update();
 
+        // do nothing if simulation is running
+        if (LevelManager.isRunning)
+        {
+            if (this == currentlySelected) ClearSelected();
+            return;
+        }
+
         if (this == currentlySelected)
         {
             Rotate();
