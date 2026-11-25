@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-public class Walking : Simulated
+public class Walking : PhysicsSimulated
 {
     public float speed;
     public float collisionBoxY;
@@ -38,6 +38,7 @@ public class Walking : Simulated
     public override void StartSimulation()
     {
         base.StartSimulation();
+        isCurrentlyWalking = true;
     }
 
     public override void StopSimulation()
