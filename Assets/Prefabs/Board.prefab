@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8999764523449817620}
   - component: {fileID: 3217863332756992703}
   - component: {fileID: 2646109594260947729}
+  - component: {fileID: -352351098812746951}
   m_Layer: 6
   m_Name: Board
   m_TagString: Untagged
@@ -183,3 +184,15 @@ MonoBehaviour:
   selectColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   tiltSpd: 90
   maxTilt: 45
+--- !u!114 &-352351098812746951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3671101694024382145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf16e29c218dfa488af865cf2507aff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Simulated

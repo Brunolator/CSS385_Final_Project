@@ -5,27 +5,17 @@ using UnityEngine.InputSystem;
 public class Draggable : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
-    Color defaultColor = Color.white;
-    public Color selectColor = Color.yellow;
+    private Color defaultColor;
+    public Color selectColor;
 
-    // Universal selected object
-    static Draggable currentlySelected;
+    protected static Draggable currentlySelected; // One selected draggable at a time
+    private static int lastFrameSetSelected = -1;
+    Vector3 clickOffset; // Offset of mouse click and object coordinates
 
-    // Object-specific variables
-    Collider2D[] colliders;
-    Camera cam;
-
-    // current state
-    protected bool selected;
-    bool dragging;
-    Vector3 drag;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Awake()
     {
-        colliders = GetComponents<Collider2D>();
-        cam = Camera.main;
-
         // Set sprite renderer and color
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
@@ -37,91 +27,80 @@ public class Draggable : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+
         // do not drag if simulation is running
         if (LevelManager.isRunning)
         {
-            if (selected) SetSelected(false);
-            dragging = false;
+            if (this == currentlySelected) ClearSelected();
             return;
         }
 
         // get mouse coordinates
-        Mouse mouse = Mouse.current;
-        Vector3 coord = GetMouseCoordinates();
+        Vector3 mouseCoord = GetMouseCoordinates();
         // if mouse was just clicked
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // select object that mouse is on
-            Physics2D.SyncTransforms();
-            Collider2D hit = Physics2D.OverlapPoint(coord);
-            // Get whether I am selected
-            SetSelected(HasCollider(hit));
-            // If I am selected, begin dragging
-            if (selected)
+            // Using frame counter to run exactly once per click among objects, set selected
+            if (lastFrameSetSelected != Time.frameCount)
             {
-                dragging = true;
-                drag = transform.position - coord;
+                lastFrameSetSelected = Time.frameCount;
+                SetSelected();
+            }
+
+            // If I am selected, begin dragging
+            if (this == currentlySelected)
+            {
+                clickOffset = transform.position - mouseCoord;
             }
         }
 
         // if dragging is active and left click is being held, change board positions
-        if (dragging && mouse.leftButton.isPressed)
+        if (this == currentlySelected && Mouse.current.leftButton.isPressed)
         {
-            transform.position = coord + drag;
-        }
-
-        // if mouse button was released
-        if (mouse.leftButton.wasReleasedThisFrame)
-        {
-            dragging = false;
+            transform.position = mouseCoord + clickOffset;
         }
     }
 
-    // select or deselect board
-    protected virtual void SetSelected(bool value)
+    protected void UpdateColor(bool selected)
     {
-        // set current as selected 
-        selected = value;
-
-        // color board to indicate it's being used
         if (spriteRenderer != null)
         {
-            spriteRenderer.color = selected ? selectColor : defaultColor;
-        }
-
-        // if setting selected
-        if (value)
-        {
-            // if this is not the current object, deselect
-            if (currentlySelected != null && currentlySelected != this)
-            {
-                currentlySelected.SetSelected(false);
-            }
-            currentlySelected = this;
-        }
-
-        // if setting unselected, unselect me
-        else if (currentlySelected == this)
-        {
-            currentlySelected = null;
+            spriteRenderer.color = selected == this ? selectColor : defaultColor;
         }
     }
 
-    private bool HasCollider(Collider2D collider)
+    // select 1 board based on mouse coordinates
+    static protected void SetSelected()
     {
-        for (int i = 0; i < colliders.Length; i++)
+        Physics2D.SyncTransforms();
+        Collider2D[] hits = Physics2D.OverlapPointAll(GetMouseCoordinates());
+        ClearSelected();
+        // Iterate all the collideres
+        for (int i = 0; i < hits.Length; i++)
         {
-            if (collider == colliders[i])
+            // If the collider is a draggable, choose that one as selected
+            if (hits[i].TryGetComponent<Draggable>(out Draggable draggable))
             {
-                return true;
+                currentlySelected = draggable;
+                currentlySelected.UpdateColor(true);
+                return;
             }
         }
-        return false;
     }
 
-    protected Vector3 GetMouseCoordinates()
+    // clear the selected color
+    static protected void ClearSelected()
     {
-        Vector3 coord = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        if (currentlySelected != null)
+        {
+            currentlySelected.UpdateColor(false);
+        }
+        currentlySelected = null;
+    }
+
+    static protected Vector3 GetMouseCoordinates()
+    {
+        Vector3 coord = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         // prevents vector from going off coordinates
         coord.z = 0;
         return coord;

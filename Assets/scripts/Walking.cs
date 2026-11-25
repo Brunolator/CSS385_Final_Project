@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-public class Walking : Simulated
+public class Walking : PhysicsSimulated
 {
     public float speed;
     public float collisionBoxY;
@@ -13,8 +13,9 @@ public class Walking : Simulated
     private bool isCurrentlyWalking = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected override void Awake()
     {
+        base.Awake();
         maxSpeedToWalk = speed;
     }
 
@@ -37,6 +38,7 @@ public class Walking : Simulated
     public override void StartSimulation()
     {
         base.StartSimulation();
+        isCurrentlyWalking = true;
     }
 
     public override void StopSimulation()
