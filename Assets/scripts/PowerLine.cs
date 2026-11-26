@@ -9,10 +9,10 @@ public class PowerLine : MonoBehaviour
     GameObject anchor2;
     PairDraggable anchor2Draggable;
 
-    private const float defaultRopeLength = 4;
-    private const float maxRopeLength = 6;
+    private const float maxRopeLength = 10;
     private float ropeLength;
     bool needsToUpdatePowerLinePosition;
+    Rope rope;
 
     void Awake()
     {
@@ -32,8 +32,16 @@ public class PowerLine : MonoBehaviour
         anchor1Draggable.SetMaxDistance(maxRopeLength);
         anchor2Draggable.SetMaxDistance(maxRopeLength);
 
-        ropeLength = DistanceBetweenAnchors();
         needsToUpdatePowerLinePosition = true;
+
+        // Create the rope
+        Rigidbody2D anchor1RB = anchor1.GetComponent<Rigidbody2D>();
+        Rigidbody2D anchor2RB = anchor2.GetComponent<Rigidbody2D>();
+        Assert.IsNotNull(anchor1RB, "Power line anchor 1 is missing a Rigidbody2D");
+        Assert.IsNotNull(anchor2RB, "Power line anchor 2 is missing a Rigidbody2D");
+        rope = gameObject.AddComponent<Rope>();
+        rope.SetAnchors(anchor1RB, anchor2RB);
+        UpdatePowerLinePosition();
     }
 
     void Update()
@@ -48,6 +56,12 @@ public class PowerLine : MonoBehaviour
         if (Selected())
         {
             ChangeRopeLengthOnInput();
+            //needsToUpdatePowerLinePosition = true;
+        }
+
+        if (Dragging())
+        {
+            needsToUpdatePowerLinePosition = true;
         }
 
         // Update position once at the end of each drag
@@ -55,12 +69,8 @@ public class PowerLine : MonoBehaviour
         {
             UpdatePowerLinePosition();
         }
-
-        if (Dragging())
-        {
-            needsToUpdatePowerLinePosition = true;
-        }
     }
+    int a = 0;
 
     // Update the links of the power line based on 
     private void UpdatePowerLinePosition()
@@ -68,7 +78,8 @@ public class PowerLine : MonoBehaviour
         needsToUpdatePowerLinePosition = false;
         ropeLength = Mathf.Max(ropeLength, DistanceBetweenAnchors());
 
-        // TODO: create the rope links
+        rope.GenerateRope();
+        // TODO: see if i still need ropeLength
     }
 
     // Use keyboard input to change the slack in the rope

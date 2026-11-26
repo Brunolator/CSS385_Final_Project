@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class Draggable : MonoBehaviour
 {
+    protected Rigidbody2D rigidbody;
     SpriteRenderer spriteRenderer;
     private Color defaultColor;
     public Color selectColor;
@@ -14,6 +15,8 @@ public class Draggable : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Awake()
     {
+        rigidbody = GetComponent<Rigidbody2D>();
+
         // Set sprite renderer and color
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
@@ -58,9 +61,11 @@ public class Draggable : MonoBehaviour
         }
     }
 
-    protected virtual void Move(Vector3 dragLocation)
+    protected virtual void Move(Vector3 destination)
     {
-        transform.position = dragLocation;
+        transform.position = destination;
+        //rigidbody.MovePosition(destination);
+
     }
 
     // Updates the color based on the given value of selected

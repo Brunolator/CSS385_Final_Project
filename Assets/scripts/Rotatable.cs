@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 public class Rotatable : Draggable
 {
-    Rigidbody2D rigidbody;
     public float tiltSpd = 90; // speed of rotation
     public float maxTilt = 45; // steepest allowed angle
     float angle; // current angle
@@ -12,8 +11,6 @@ public class Rotatable : Draggable
     protected override void Awake()
     {
         base.Awake();
-
-        rigidbody = GetComponent<Rigidbody2D>();
         angle = rigidbody.rotation;
     }
 
@@ -28,6 +25,7 @@ public class Rotatable : Draggable
             return;
         }
 
+        // Rotate if selected
         if (this == currentlySelected)
         {
             Rotate();

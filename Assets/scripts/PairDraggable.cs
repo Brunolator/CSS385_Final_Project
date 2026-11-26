@@ -33,7 +33,8 @@ public class PairDraggable : Draggable
         Vector3 diff = (dragLocation - other.transform.position);
         float distance = Mathf.Min(diff.magnitude, maxDistance);
         Vector3 direction = diff.normalized;
-        transform.position = other.transform.position + distance * direction;
+        Vector3 destination = other.transform.position + distance * direction;
+        base.Move(destination);
     }
 
     // Returns the distance from me to the other PairDraggable
