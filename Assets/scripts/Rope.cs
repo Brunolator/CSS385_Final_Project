@@ -10,7 +10,7 @@ public class Rope : MonoBehaviour
 
     // Rope properties
     public int segmentCount = 15;
-    public float sagAmount = 1.5f;
+    public float sagAmount = -1.5f;
     public float segmentRadius = 0.08f;
     public float segmentMass = 0.2f;
     public float linearDamping = 0.5f;
@@ -70,22 +70,22 @@ public class Rope : MonoBehaviour
             Vector2 segmentPos = linearPos + Vector2.down * sagOffset; // Spawn position
 
             // Create the segment
-            GameObject segment = CreateSegment(segmentPos, previousBody, "RopeSegment_" + i);
+            GameObject segment = CreateSegment(segmentPos, previousBody, "RopeSegment_" + i, i == 0);
             Rigidbody2D segmentRB = segment.GetComponent<Rigidbody2D>();
             segments.Add(segmentRB);
             previousBody = segmentRB;
         }
 
         // Add the hinge from the last object to the end
-        AddHingeJoint(endAnchor.gameObject, previousBody, endAnchor.position);
+        AddHingeJoint(endAnchor, previousBody, false);
     }
 
-    private GameObject CreateSegment(Vector2 position, Rigidbody2D connectTo, string name)
+    private GameObject CreateSegment(Vector2 SegmentPos, Rigidbody2D connectTo, string name, bool isFirstSegment)
     {
         // Create the segment
         GameObject segmentObject = new GameObject(name);
         segmentObject.transform.SetParent(transform);
-        segmentObject.transform.position = position;
+        segmentObject.transform.position = SegmentPos;
         segmentObject.layer = LayerMask.NameToLayer("Standable"); // Allow the player to stand on it
 
         // Create the segment's rigid body
@@ -99,22 +99,28 @@ public class Rope : MonoBehaviour
         CircleCollider2D collider = segmentObject.AddComponent<CircleCollider2D>();
         collider.radius = segmentRadius;
 
-        AddHingeJoint(segmentObject, connectTo, position);
+        AddHingeJoint(rb, connectTo, isFirstSegment);
         return segmentObject;
     }
 
     // Make a joint from the given game object to the given rigid body
-    private void AddHingeJoint(GameObject connectFrom, Rigidbody2D connectTo, Vector2 segmentPosition)
+    private void AddHingeJoint(Rigidbody2D connectFrom, Rigidbody2D connectTo, bool isFirstSegment)
     {
-        HingeJoint2D joint = connectFrom.AddComponent<HingeJoint2D>();
-        joint.connectedBody = connectTo;
+        HingeJoint2D joint = connectFrom.gameObject.AddComponent<HingeJoint2D>();
         joint.autoConfigureConnectedAnchor = false;
-        joint.anchor = Vector2.zero;
+        joint.connectedBody = connectTo;
 
         // Set connectedAnchor to the exact spawn offset so the rope doesn't snap/jitter on frame 1
-        Vector2 worldOffset = segmentPosition - connectTo.position;
-        joint.connectedAnchor = connectTo.transform.InverseTransformVector(worldOffset);
-
+        if (isFirstSegment)
+        {
+            joint.anchor = connectTo.transform.InverseTransformPoint(connectTo.position);
+            joint.connectedAnchor = Vector2.zero;
+        }
+        else
+        {
+            joint.anchor = Vector2.zero;
+            joint.connectedAnchor = connectTo.transform.InverseTransformPoint(connectFrom.position);
+        }
         joints.Add(joint);
     }
 
