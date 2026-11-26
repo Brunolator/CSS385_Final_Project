@@ -75,7 +75,7 @@ public class Rope : MonoBehaviour
     public void GenerateRope()
     {
         Assert.IsTrue(startAnchor != null && endAnchor != null);
-        RecalculateRopePoints();
+        RecalculateRopePosition();
         lineRenderer.positionCount = segmentCount + 2;
 
         // Loop of generating rope points and connecting each to the previous
@@ -97,7 +97,7 @@ public class Rope : MonoBehaviour
     }
 
     // Get the points that the rope segments will take
-    public void RecalculateRopePoints()
+    public void RecalculateRopePosition()
     {
         Assert.IsTrue(startAnchor != null && endAnchor != null);
         ClearRope();
@@ -115,19 +115,33 @@ public class Rope : MonoBehaviour
     }
 
     // Use keyboard input to change the sag in the rope
-    public void UpdateRopeOnInput()
+    public void UpdateRopeOnInput(bool dragging)
     {
         // Get keyboard input (for sag changing)
         Keyboard keys = Keyboard.current;
         float input = (keys.downArrowKey.isPressed ? 0.05f : 0f) - (keys.upArrowKey.isPressed ? 0.05f : 0f);
 
-        // Update sag if the resulting rope length is less than max length
+        // If dragged to be longer than max length
+        if (dragging && GetParabolaLength(sagAmount) > maxRopeLength)
+        {
+            float newSagAmount = GetParabolaSag(maxRopeLength) * (sagAmount < 0 ? -1 : 1);
+            if (Mathf.Abs(newSagAmount) < Mathf.Abs(sagAmount))
+            {
+                // Since there is error only actually update if new sag amount is less absolute
+                sagAmount = newSagAmount;
+            }
+        }
+
+
+        // If rope length is less than max OR sag is decreasing (sagAmount * input <= 0), update sag amount
+        // (this is because if sag is decreasing the rope is getting shorter so max doesn't matter)
         float lengthIfChanged = GetParabolaLength(sagAmount + input);
-        if (lengthIfChanged >= -maxRopeLength && lengthIfChanged <= maxRopeLength)
+        if (lengthIfChanged <= maxRopeLength || sagAmount * input <= 0)
         {
             sagAmount += input;
         }
-        RecalculateRopePoints();
+
+        RecalculateRopePosition();
     }
 
     private GameObject CreateSegment(Vector2 SegmentPos, Rigidbody2D connectTo, string name, bool isFirstSegment)
@@ -235,5 +249,30 @@ public class Rope : MonoBehaviour
         float lEnd = Mathf.Sqrt(1f + mEnd * mEnd);
 
         return (w / 6f) * (lStart + 4f * lMid + lEnd);
+    }
+
+    // Uses super complicated math stuff to get sag given length
+    private float GetParabolaSag(float targetLength)
+    {
+        Vector2 start = startAnchor.position;
+        Vector2 end = endAnchor.position;
+
+        float w = Mathf.Abs(end.x - start.x);
+        float dy = end.y - start.y;
+        float minLengthSq = w * w + dy * dy;
+
+        // Taut fallback (no division by w, so vertical anchors work natively)
+        if (targetLength * targetLength <= minLengthSq)
+            return 0f;
+
+        float lSq = targetLength * targetLength;
+
+        // Smoothly transition scale from exact small-sag parabola (0.375) to deep-sag V-shape (0.25)
+        float t = Mathf.Clamp01((lSq - minLengthSq) / (minLengthSq + 0.0001f));
+        float scale = Mathf.Lerp(0.375f, 0.25f, t);
+
+        float sagSq = scale * (lSq - w * w - (dy * dy * w * w) / lSq);
+
+        return Mathf.Sqrt(Mathf.Max(0f, sagSq));
     }
 }

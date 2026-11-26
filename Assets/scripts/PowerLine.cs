@@ -9,7 +9,6 @@ public class PowerLine : Simulated
     PairDraggable anchor2Draggable;
 
     private const float maxRopeLength = 10;
-    bool needsToUpdatePowerLinePosition;
     Rope rope;
 
     protected override void Awake()
@@ -30,8 +29,6 @@ public class PowerLine : Simulated
         anchor1Draggable.SetMaxDistance(maxRopeLength);
         anchor2Draggable.SetMaxDistance(maxRopeLength);
 
-        needsToUpdatePowerLinePosition = true;
-
         // Create the rope
         Rigidbody2D anchor1RB = anchor1.GetComponent<Rigidbody2D>();
         Rigidbody2D anchor2RB = anchor2.GetComponent<Rigidbody2D>();
@@ -40,7 +37,7 @@ public class PowerLine : Simulated
         rope = gameObject.AddComponent<Rope>();
         rope.SetMaxRopeLength(maxRopeLength);
         rope.SetAnchors(anchor1RB, anchor2RB);
-        rope.RecalculateRopePoints();
+        rope.RecalculateRopePosition();
     }
 
     void FixedUpdate()
@@ -54,15 +51,7 @@ public class PowerLine : Simulated
         // If selected, use keyboard input to change the slack of the rope
         if (Selected())
         {
-            rope.UpdateRopeOnInput();
-            needsToUpdatePowerLinePosition = true;
-        }
-
-        // Update position once at the end of each drag
-        if (needsToUpdatePowerLinePosition && !Dragging())
-        {
-            needsToUpdatePowerLinePosition = false;
-            rope.RecalculateRopePoints();
+            rope.UpdateRopeOnInput(Dragging());
         }
     }
 
@@ -73,7 +62,7 @@ public class PowerLine : Simulated
 
     public override void StopSimulation()
     {
-        rope.RecalculateRopePoints(); // Reset rope position
+        rope.RecalculateRopePosition();
     }
 
     private bool Selected()
