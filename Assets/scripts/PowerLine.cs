@@ -2,7 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PowerLine : MonoBehaviour
+public class PowerLine : Simulated
 {
     GameObject anchor1;
     PairDraggable anchor1Draggable;
@@ -14,7 +14,7 @@ public class PowerLine : MonoBehaviour
     bool needsToUpdatePowerLinePosition;
     Rope rope;
 
-    void Awake()
+    protected override void Awake()
     {
         // Get the 2 anchors
         Transform anchor1Transform = transform.Find("Anchor1");
@@ -69,7 +69,16 @@ public class PowerLine : MonoBehaviour
             UpdatePowerLinePosition();
         }
     }
-    int a = 0;
+
+    public override void StartSimulation()
+    {
+        rope.GenerateRope(); // TODO: make it only generate rope on simulation and overwise just draw a parabola
+    }
+
+    public override void StopSimulation()
+    {
+        rope.GenerateRope(); // Reset rope position
+    }
 
     // Update the links of the power line based on 
     private void UpdatePowerLinePosition()
