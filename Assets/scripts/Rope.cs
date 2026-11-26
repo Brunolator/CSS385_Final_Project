@@ -10,7 +10,8 @@ public class Rope : MonoBehaviour
 
     // Rope properties
     public int segmentCount = 15;
-    public float sagAmount = -1.5f;
+    public int segmentsPerUnit = 4;
+    public float sagAmount = 1.5f;
     public float segmentRadius = 0.08f;
     public float segmentMass = 0.2f;
     public float linearDamping = 0.5f;
@@ -20,6 +21,8 @@ public class Rope : MonoBehaviour
     // List of rope segments
     private List<Rigidbody2D> segments = new List<Rigidbody2D>();
     private List<HingeJoint2D> joints = new List<HingeJoint2D>();
+    private List<Vector2> segmentPositions = new List<Vector2>();
+    private bool simulating = false;
 
     private void Awake()
     {
@@ -28,18 +31,29 @@ public class Rope : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (segments.Count == 0)
+        if (simulating)
         {
-            return;
-        }
+            // If simulating, update line renderer based on segments
+            lineRenderer.positionCount = segments.Count + 2;
+            lineRenderer.SetPosition(0, startAnchor.position);
+            for (int i = 0; i < segments.Count; i++)
+            {
+                lineRenderer.SetPosition(i + 1, segments[i].position);
+            }
+            lineRenderer.SetPosition(segments.Count + 1, endAnchor.position);
 
-        // Update the line renderer each frame
-        lineRenderer.SetPosition(0, startAnchor.position);
-        for (int i = 0; i < segments.Count; i++)
-        {
-            lineRenderer.SetPosition(i + 1, segments[i].position);
         }
-        lineRenderer.SetPosition(segments.Count + 1, endAnchor.position);
+        else
+        {
+            // If not simulating, update line renderer based on segment locations
+            lineRenderer.positionCount = segmentPositions.Count + 2;
+            lineRenderer.SetPosition(0, startAnchor.position);
+            for (int i = 0; i < segmentPositions.Count; i++)
+            {
+                lineRenderer.SetPosition(i + 1, segmentPositions[i]);
+            }
+            lineRenderer.SetPosition(segmentPositions.Count + 1, endAnchor.position);
+        }
     }
 
     // Sets the ends of the rope
@@ -53,21 +67,14 @@ public class Rope : MonoBehaviour
     public void GenerateRope()
     {
         Assert.IsTrue(startAnchor != null && endAnchor != null);
-        ClearRope();
-
-        Vector2 startPos = startAnchor.position;
-        Vector2 endPos = endAnchor.position;
+        RecalculateRopePoints();
         lineRenderer.positionCount = segmentCount + 2;
 
         // Loop of generating rope points and connecting each to the previous
         Rigidbody2D previousBody = startAnchor; // Store the rope's previous connection
         for (int i = 0; i < segmentCount; i++)
         {
-            // Calculate the rope segment's spawn position
-            float t = (float)(i + 1) / (segmentCount + 1); // Number between 0 and 1 for segment index
-            Vector2 linearPos = Vector2.Lerp(startPos, endPos, t); // Horizontal position
-            float sagOffset = 4f * sagAmount * t * (1f - t); // Y offset because of sag in rope
-            Vector2 segmentPos = linearPos + Vector2.down * sagOffset; // Spawn position
+            Vector2 segmentPos = segmentPositions[i];
 
             // Create the segment
             GameObject segment = CreateSegment(segmentPos, previousBody, "RopeSegment_" + i, i == 0);
@@ -78,6 +85,25 @@ public class Rope : MonoBehaviour
 
         // Add the hinge from the last object to the end
         AddHingeJoint(endAnchor, previousBody, false);
+        simulating = true;
+    }
+
+    // Get the points that the rope segments will take
+    public void RecalculateRopePoints()
+    {
+        Assert.IsTrue(startAnchor != null && endAnchor != null);
+        ClearRope();
+        // Update segment count
+        segmentCount = Mathf.Max(1, Mathf.RoundToInt(GetParabolaLength() * segmentsPerUnit));
+        for (int i = 0; i < segmentCount; i++)
+        {
+            // Calculate the segment position
+            float t = (float)(i + 1) / (segmentCount + 1); // Number between 0 and 1 for segment index
+            Vector2 linearPos = Vector2.Lerp(startAnchor.position, endAnchor.position, t); // Position on the line between points
+            float sagOffset = 4f * sagAmount * t * (1f - t); // Y offset in segment position caused by sag
+            Vector2 segmentPos = linearPos + Vector2.down * sagOffset; // Segment position
+            segmentPositions.Add(segmentPos);
+        }
     }
 
     private GameObject CreateSegment(Vector2 SegmentPos, Rigidbody2D connectTo, string name, bool isFirstSegment)
@@ -99,6 +125,7 @@ public class Rope : MonoBehaviour
         CircleCollider2D collider = segmentObject.AddComponent<CircleCollider2D>();
         collider.radius = segmentRadius;
 
+        // Attach the segment to the rope using a joint
         AddHingeJoint(rb, connectTo, isFirstSegment);
         return segmentObject;
     }
@@ -134,6 +161,8 @@ public class Rope : MonoBehaviour
     // Delete the rope by deleting all rope segments
     public void ClearRope()
     {
+        simulating = false;
+
         // Clear all rope segments
         foreach (var segment in segments)
         {
@@ -153,5 +182,34 @@ public class Rope : MonoBehaviour
             }
         }
         joints.Clear();
+
+        // Clear all segment positions
+        segmentPositions.Clear();
+    }
+
+    // Uses complicated math stuff to get the parabola length
+    public float GetParabolaLength()
+    {
+        Vector2 start = startAnchor.position;
+        Vector2 end = endAnchor.position;
+
+        float w = Mathf.Abs(end.x - start.x);
+        float dy = end.y - start.y;
+
+        // Straight line fallback if anchors are vertically aligned or sag is ~0
+        if (w < 0.0001f || Mathf.Abs(sagAmount) < 0.0001f)
+            return Vector2.Distance(start, end);
+
+        // Slopes at start (x=0), midpoint (x=w/2), and end (x=w)
+        float mStart = (dy - 4f * sagAmount) / w;
+        float mMid = dy / w;
+        float mEnd = (dy + 4f * sagAmount) / w;
+
+        // Simpson's 1/3 Rule approximation (within ~99.9% of exact integral)
+        float lStart = Mathf.Sqrt(1f + mStart * mStart);
+        float lMid = Mathf.Sqrt(1f + mMid * mMid);
+        float lEnd = Mathf.Sqrt(1f + mEnd * mEnd);
+
+        return (w / 6f) * (lStart + 4f * lMid + lEnd);
     }
 }

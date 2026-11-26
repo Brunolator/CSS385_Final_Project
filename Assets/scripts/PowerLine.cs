@@ -41,7 +41,7 @@ public class PowerLine : Simulated
         Assert.IsNotNull(anchor2RB, "Power line anchor 2 is missing a Rigidbody2D");
         rope = gameObject.AddComponent<Rope>();
         rope.SetAnchors(anchor1RB, anchor2RB);
-        UpdatePowerLinePosition();
+        rope.RecalculateRopePoints();
     }
 
     void FixedUpdate()
@@ -60,32 +60,27 @@ public class PowerLine : Simulated
 
         if (Dragging())
         {
+            rope.RecalculateRopePoints();
+            ropeLength = Mathf.Max(ropeLength, DistanceBetweenAnchors());
             needsToUpdatePowerLinePosition = true;
         }
 
         // Update position once at the end of each drag
         if (needsToUpdatePowerLinePosition && !Dragging())
         {
-            UpdatePowerLinePosition();
+            needsToUpdatePowerLinePosition = false;
+            rope.RecalculateRopePoints();
         }
     }
 
     public override void StartSimulation()
     {
-        rope.GenerateRope(); // TODO: make it only generate rope on simulation and overwise just draw a parabola
+        rope.GenerateRope();
     }
 
     public override void StopSimulation()
     {
-        rope.GenerateRope(); // Reset rope position
-    }
-
-    // Update the links of the power line based on 
-    private void UpdatePowerLinePosition()
-    {
-        needsToUpdatePowerLinePosition = false;
-        ropeLength = Mathf.Max(ropeLength, DistanceBetweenAnchors());
-        rope.GenerateRope();
+        rope.RecalculateRopePoints(); // Reset rope position
     }
 
     // Use keyboard input to change the slack in the rope
