@@ -44,7 +44,7 @@ public class PowerLine : MonoBehaviour
         UpdatePowerLinePosition();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // Cannot interfere if level is running
         if (LevelManager.isRunning)
@@ -56,7 +56,6 @@ public class PowerLine : MonoBehaviour
         if (Selected())
         {
             ChangeRopeLengthOnInput();
-            //needsToUpdatePowerLinePosition = true;
         }
 
         if (Dragging())
@@ -77,9 +76,7 @@ public class PowerLine : MonoBehaviour
     {
         needsToUpdatePowerLinePosition = false;
         ropeLength = Mathf.Max(ropeLength, DistanceBetweenAnchors());
-
         rope.GenerateRope();
-        // TODO: see if i still need ropeLength
     }
 
     // Use keyboard input to change the slack in the rope

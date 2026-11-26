@@ -11,11 +11,15 @@ public class Draggable : MonoBehaviour
     protected static Draggable currentlySelected; // One selected draggable at a time
     private static int lastFrameSetSelected = -1;
     Vector3 clickOffset; // Offset of mouse click and object coordinates
+    Vector3 spotToMoveNext; // Stores the location to move to
+    bool shouldMoveRigidBody;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        spotToMoveNext = rigidbody.transform.position;
+        shouldMoveRigidBody = false;
 
         // Set sprite renderer and color
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -61,11 +65,21 @@ public class Draggable : MonoBehaviour
         }
     }
 
+    // Move the rigidbody directly so that the rigidbody position updates immediately
+    protected virtual void FixedUpdate()
+    {
+        if (shouldMoveRigidBody)
+        {
+            rigidbody.MovePosition(spotToMoveNext);
+            shouldMoveRigidBody = false;
+        }
+    }
+
     protected virtual void Move(Vector3 destination)
     {
-        transform.position = destination;
-        //rigidbody.MovePosition(destination);
-
+        transform.position = spotToMoveNext; // For smooth visual dragging
+        spotToMoveNext = destination;
+        shouldMoveRigidBody = true;
     }
 
     // Updates the color based on the given value of selected
