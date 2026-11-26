@@ -8,7 +8,7 @@ public class PowerLine : Simulated
     GameObject anchor2;
     PairDraggable anchor2Draggable;
 
-    private const float maxRopeLength = 10;
+    public float maxRopeLength = 8;
     Rope rope;
 
     protected override void Awake()

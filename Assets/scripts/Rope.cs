@@ -10,13 +10,13 @@ public class Rope : MonoBehaviour
     public Rigidbody2D endAnchor;
 
     // Rope properties
-    public float maxRopeLength = 10;
-    public int segmentCount = 15;
-    public int segmentsPerUnit = 4;
-    public float sagAmount = 1.5f;
-    public float segmentRadius = 0.08f;
-    public float segmentMass = 0.2f;
-    public float linearDamping = 0.5f;
+    public float maxRopeLength = 8;
+    private int segmentCount = 15;
+    private int segmentsPerUnit = 4;
+    private float sagAmount = 1.5f;
+    private float segmentRadius = 0.08f;
+    private float segmentMass = 0.2f;
+    private float linearDamping = 0.5f;
 
     // Makes the rope visible
     private LineRenderer lineRenderer;
