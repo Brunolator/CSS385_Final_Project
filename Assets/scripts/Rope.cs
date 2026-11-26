@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Rope : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Rope : MonoBehaviour
     public Rigidbody2D endAnchor;
 
     // Rope properties
+    public float maxRopeLength = 10;
     public int segmentCount = 15;
     public int segmentsPerUnit = 4;
     public float sagAmount = 1.5f;
@@ -63,6 +65,12 @@ public class Rope : MonoBehaviour
         endAnchor = endAnchor_;
     }
 
+    // Set max rope length
+    public void SetMaxRopeLength(float length)
+    {
+        maxRopeLength = length;
+    }
+
     // Create the rope
     public void GenerateRope()
     {
@@ -94,7 +102,7 @@ public class Rope : MonoBehaviour
         Assert.IsTrue(startAnchor != null && endAnchor != null);
         ClearRope();
         // Update segment count
-        segmentCount = Mathf.Max(1, Mathf.RoundToInt(GetParabolaLength() * segmentsPerUnit));
+        segmentCount = Mathf.Max(1, Mathf.RoundToInt(GetParabolaLength(sagAmount) * segmentsPerUnit));
         for (int i = 0; i < segmentCount; i++)
         {
             // Calculate the segment position
@@ -104,6 +112,22 @@ public class Rope : MonoBehaviour
             Vector2 segmentPos = linearPos + Vector2.down * sagOffset; // Segment position
             segmentPositions.Add(segmentPos);
         }
+    }
+
+    // Use keyboard input to change the sag in the rope
+    public void UpdateRopeOnInput()
+    {
+        // Get keyboard input (for sag changing)
+        Keyboard keys = Keyboard.current;
+        float input = (keys.downArrowKey.isPressed ? 0.05f : 0f) - (keys.upArrowKey.isPressed ? 0.05f : 0f);
+
+        // Update sag if the resulting rope length is less than max length
+        float lengthIfChanged = GetParabolaLength(sagAmount + input);
+        if (lengthIfChanged >= -maxRopeLength && lengthIfChanged <= maxRopeLength)
+        {
+            sagAmount += input;
+        }
+        RecalculateRopePoints();
     }
 
     private GameObject CreateSegment(Vector2 SegmentPos, Rigidbody2D connectTo, string name, bool isFirstSegment)
@@ -188,7 +212,7 @@ public class Rope : MonoBehaviour
     }
 
     // Uses complicated math stuff to get the parabola length
-    public float GetParabolaLength()
+    private float GetParabolaLength(float sag)
     {
         Vector2 start = startAnchor.position;
         Vector2 end = endAnchor.position;
@@ -197,13 +221,13 @@ public class Rope : MonoBehaviour
         float dy = end.y - start.y;
 
         // Straight line fallback if anchors are vertically aligned or sag is ~0
-        if (w < 0.0001f || Mathf.Abs(sagAmount) < 0.0001f)
+        if (w < 0.0001f || Mathf.Abs(sag) < 0.0001f)
             return Vector2.Distance(start, end);
 
         // Slopes at start (x=0), midpoint (x=w/2), and end (x=w)
-        float mStart = (dy - 4f * sagAmount) / w;
+        float mStart = (dy - 4f * sag) / w;
         float mMid = dy / w;
-        float mEnd = (dy + 4f * sagAmount) / w;
+        float mEnd = (dy + 4f * sag) / w;
 
         // Simpson's 1/3 Rule approximation (within ~99.9% of exact integral)
         float lStart = Mathf.Sqrt(1f + mStart * mStart);

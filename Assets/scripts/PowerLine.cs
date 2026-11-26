@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PowerLine : Simulated
 {
@@ -10,7 +9,6 @@ public class PowerLine : Simulated
     PairDraggable anchor2Draggable;
 
     private const float maxRopeLength = 10;
-    private float ropeLength;
     bool needsToUpdatePowerLinePosition;
     Rope rope;
 
@@ -40,6 +38,7 @@ public class PowerLine : Simulated
         Assert.IsNotNull(anchor1RB, "Power line anchor 1 is missing a Rigidbody2D");
         Assert.IsNotNull(anchor2RB, "Power line anchor 2 is missing a Rigidbody2D");
         rope = gameObject.AddComponent<Rope>();
+        rope.SetMaxRopeLength(maxRopeLength);
         rope.SetAnchors(anchor1RB, anchor2RB);
         rope.RecalculateRopePoints();
     }
@@ -55,13 +54,7 @@ public class PowerLine : Simulated
         // If selected, use keyboard input to change the slack of the rope
         if (Selected())
         {
-            ChangeRopeLengthOnInput();
-        }
-
-        if (Dragging())
-        {
-            rope.RecalculateRopePoints();
-            ropeLength = Mathf.Max(ropeLength, DistanceBetweenAnchors());
+            rope.UpdateRopeOnInput();
             needsToUpdatePowerLinePosition = true;
         }
 
@@ -81,21 +74,6 @@ public class PowerLine : Simulated
     public override void StopSimulation()
     {
         rope.RecalculateRopePoints(); // Reset rope position
-    }
-
-    // Use keyboard input to change the slack in the rope
-    private void ChangeRopeLengthOnInput()
-    {
-        Keyboard keys = Keyboard.current;
-        float input = (keys.upArrowKey.isPressed ? 0.005f : 0f) - (keys.downArrowKey.isPressed ? 0.005f : 0f);
-
-        // Update rope length if longer than distance between anchors, but shorter than max rope length
-        ropeLength = Mathf.Max(Mathf.Min(ropeLength + input, maxRopeLength), DistanceBetweenAnchors());
-    }
-
-    private float DistanceBetweenAnchors()
-    {
-        return anchor1Draggable.DistanceFromOther();
     }
 
     private bool Selected()
