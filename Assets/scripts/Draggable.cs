@@ -4,16 +4,23 @@ using UnityEngine.InputSystem;
 
 public class Draggable : MonoBehaviour
 {
+    protected Rigidbody2D rigidbody;
     SpriteRenderer spriteRenderer;
     private Color defaultColor;
     public Color selectColor;
     protected static Draggable currentlySelected; // One selected draggable at a time
     private static int lastFrameSetSelected = -1;
     Vector3 clickOffset; // Offset of mouse click and object coordinates
+    Vector3 spotToMoveNext; // Stores the location to move to
+    bool shouldMoveRigidBody;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Awake()
     {
+        rigidbody = GetComponent<Rigidbody2D>();
+        spotToMoveNext = rigidbody.transform.position;
+        shouldMoveRigidBody = false;
+
         // Set sprite renderer and color
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
@@ -58,9 +65,21 @@ public class Draggable : MonoBehaviour
         }
     }
 
-    protected virtual void Move(Vector3 to)
+    // Move the rigidbody directly so that the rigidbody position updates immediately
+    protected virtual void FixedUpdate()
     {
-        transform.position = to;
+        if (shouldMoveRigidBody)
+        {
+            rigidbody.MovePosition(spotToMoveNext);
+            shouldMoveRigidBody = false;
+        }
+    }
+
+    protected virtual void Move(Vector3 destination)
+    {
+        transform.position = spotToMoveNext; // For smooth visual dragging
+        spotToMoveNext = destination;
+        shouldMoveRigidBody = true;
     }
 
     // Updates the color based on the given value of selected
@@ -113,6 +132,7 @@ public class Draggable : MonoBehaviour
         currentlySelected = null;
     }
 
+    // Returns mouse click as a Vector3 so it's compatible with transform.position
     static protected Vector3 GetMouseCoordinates()
     {
         Vector3 coord = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
