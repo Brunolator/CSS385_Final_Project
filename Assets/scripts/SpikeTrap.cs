@@ -21,12 +21,15 @@ public class SpikeTrap : MonoBehaviour
             return;
         }
         triggered = true;
-
+        lvlManager.OnGoalFailed();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(triggered && !LevelManager.isRunning)
+        {
+            triggered = false;
+        }
     }
 }
