@@ -90,6 +90,7 @@ public class Rope : Simulated
     {
         base.StartSimulation();
 
+        // Create the physical rope
         Assert.IsTrue(startAnchor != null && endAnchor != null);
         RecalculateRopePosition();
         lineRenderer.positionCount = segmentCount + 2;

@@ -45,4 +45,9 @@ public class PhysicsSimulated : Simulated
         transform.position = startPosition;
         transform.rotation = startRotation;
     }
+
+    public Rigidbody2D GetRigidbody()
+    {
+        return body;
+    }
 }

@@ -51,7 +51,7 @@ public class Draggable : MonoBehaviour
         // if mouse was just clicked
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // Using frame counter to run exactly once per click among draggables, set selected
+            // Using static frame counter to run exactly once per click among draggables, set selected
             if (lastFrameSetSelected != Time.frameCount)
             {
                 lastFrameSetSelected = Time.frameCount;
@@ -107,6 +107,12 @@ public class Draggable : MonoBehaviour
     public bool IsSelected()
     {
         return this == currentlySelected;
+    }
+
+    // Returns whether the currently selected draggable is actively being dragged
+    public static bool SomethingIsBeingDragged()
+    {
+        return currentlySelected != null && currentlySelected.IsBeingDragged();
     }
 
     // select 1 board based on mouse coordinates
