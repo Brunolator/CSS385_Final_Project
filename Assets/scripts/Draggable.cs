@@ -18,6 +18,13 @@ public class Draggable : MonoBehaviour
     protected virtual void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+
+        // A draggable should never be static (for performence)
+        if (rigidbody.bodyType == RigidbodyType2D.Static)
+        {
+            rigidbody.bodyType = RigidbodyType2D.Kinematic;
+        }
+
         spotToMoveNext = rigidbody.transform.position;
         shouldMoveRigidBody = false;
 
@@ -70,14 +77,13 @@ public class Draggable : MonoBehaviour
     {
         if (shouldMoveRigidBody)
         {
-            rigidbody.MovePosition(spotToMoveNext);
+            rigidbody.MovePosition((Vector2)spotToMoveNext);
             shouldMoveRigidBody = false;
         }
     }
 
     protected virtual void Move(Vector3 destination)
     {
-        transform.position = spotToMoveNext; // For smooth visual dragging
         spotToMoveNext = destination;
         shouldMoveRigidBody = true;
     }

@@ -25,7 +25,6 @@ public class LevelManager : MonoBehaviour
         {
             simulatedObjects[i].StartSimulation();
         }
-        Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
         isRunning = true;
     }
 
@@ -36,7 +35,6 @@ public class LevelManager : MonoBehaviour
         {
             simulatedObjects[i].StopSimulation();
         }
-        Physics2D.simulationMode = SimulationMode2D.Script;
         // hide win text
         if (winText != null)
         {
@@ -71,7 +69,7 @@ public class LevelManager : MonoBehaviour
         {
             winText.SetActive(true);
         }
-        if(levelName != null)
+        if (levelName != null)
         {
             SaveManager.CompleteLevel(levelName);
         }

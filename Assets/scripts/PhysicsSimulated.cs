@@ -15,6 +15,7 @@ public class PhysicsSimulated : Simulated
 
         // get object components and starting position
         body = GetComponent<Rigidbody2D>();
+        body.bodyType = RigidbodyType2D.Kinematic;
         startPosition = transform.position;
         body.freezeRotation = freezeRotation;
     }
