@@ -76,4 +76,23 @@ public class LevelManager : MonoBehaviour
             SaveManager.CompleteLevel(levelName);
         }
     }
+
+    public void OnGoalFailed()
+    {
+        // Tell objects that the goal was met
+        for (int i = 0; i < simulatedObjects.Length; i++)
+        {
+            simulatedObjects[i].OnLevelGoalMet();
+        }
+
+        // display win text
+        if (winText != null)
+        {
+            winText.SetActive(true);
+        }
+        if(levelName != null)
+        {
+            SaveManager.CompleteLevel(levelName);
+        }
+    }
 }
