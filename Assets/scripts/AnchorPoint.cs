@@ -1,10 +1,13 @@
 using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AnchorPoint : PhysicsSimulated
 {
-    Collider2D myCollider;
     Collider2D attachedTo;
+    Collider2D myCollider;
+    // Filters out objects when detecting collisions
+    ContactFilter2D contactFilter;
     HingeJoint2D attachmentJoint;
     Draggable myDraggable;
 
@@ -13,6 +16,11 @@ public class AnchorPoint : PhysicsSimulated
         base.Awake();
 
         myCollider = GetComponent<Collider2D>();
+        contactFilter = new ContactFilter2D
+        {
+            // Do not try to anchor to triggers
+            useTriggers = false
+        };
 
         // Get a draggable component if I have one
         if (TryGetComponent<Draggable>(out Draggable draggable))
@@ -53,8 +61,8 @@ public class AnchorPoint : PhysicsSimulated
     // If not, destroy connection and try to find a new attachment
     private void CheckAttachment()
     {
-        bool stillAttached = attachedTo != null && attachedTo.OverlapPoint(body.position);
-        if (!stillAttached)
+        bool stillOverlaps = attachedTo != null && attachedTo.OverlapPoint(body.position);
+        if (!stillOverlaps)
         {
             Detatch();
             TryAttachAnchor();
@@ -64,37 +72,27 @@ public class AnchorPoint : PhysicsSimulated
     // Attempts to find an overlapping object to attach the anchor to, prioritizing physics simulated obejcts
     private void TryAttachAnchor()
     {
-        Collider2D[] hits = Physics2D.OverlapPointAll(body.position);
+        List<Collider2D> hits = new List<Collider2D>();
+        Physics2D.OverlapCollider(myCollider, contactFilter, hits);
 
-        // If there is only 1 hit then its just the anchor itself
-        if (hits.Length <= 1)
+        // If no collisions do nothing
+        if (hits.Count == 0)
         {
             return;
         }
 
         // Look for objects to attach to, prioritizing PhysicsSimulateds
-        for (int i = 0; i < hits.Length; i++)
+        for (int i = 0; i < hits.Count; i++)
         {
             // If the collider is a PhysicsSimulated, choose that one as selected
             if (hits[i].TryGetComponent<PhysicsSimulated>(out PhysicsSimulated otherPhysicsObject))
             {
-                if (otherPhysicsObject == this)
-                {
-                    continue; // Cannot attach to self
-                }
                 Attach(hits[i]);
                 return;
             }
         }
 
-        // If no attachments are physics but there are other ones, choose one arbitrarily
-        for (int i = 0; i < hits.Length; i++)
-        {
-            if (hits[i] != myCollider)
-            {
-                Attach(hits[i]);
-                break;
-            }
-        }
+        // If no attachments are physics simulated but there are other ones, choose one arbitrarily
+        Attach(hits[0]);
     }
 }
