@@ -10,7 +10,7 @@ public class Walking : PhysicsSimulated
     public LayerMask groundLayer;
     private float maxSpeedToWalk; // Max speed for which walking force should be applied
     private float speedModifier = 8.5f; // Controls both horsepower and direction
-    private bool isCurrentlyWalking = true;
+    bool isCurrentlyWalking = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Awake()
