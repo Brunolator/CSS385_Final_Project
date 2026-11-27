@@ -6,6 +6,7 @@ public class LevelManager : MonoBehaviour
     Simulated[] simulatedObjects;
     // win text
     public GameObject winText;
+    public GameObject loseText;
     public static bool isRunning { get; private set; }
 
     public string levelName;
@@ -27,6 +28,7 @@ public class LevelManager : MonoBehaviour
         }
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
         isRunning = true;
+        
     }
 
     // Stop playing the level
@@ -43,6 +45,10 @@ public class LevelManager : MonoBehaviour
             winText.SetActive(false);
         }
         isRunning = false;
+        if(loseText != null)
+        {
+            loseText.SetActive(false);
+        }
     }
 
     // Switch to the main menu
@@ -75,5 +81,20 @@ public class LevelManager : MonoBehaviour
         {
             SaveManager.CompleteLevel(levelName);
         }
+    }
+
+    public void OnGoalFailed()
+    {
+
+        if (!isRunning)
+        {
+            return;
+        } 
+        // display win text
+        if (loseText != null)
+        {
+            loseText.SetActive(true);
+        }
+        Physics2D.simulationMode = SimulationMode2D.Script;
     }
 }
