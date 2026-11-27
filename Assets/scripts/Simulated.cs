@@ -22,4 +22,7 @@ public class Simulated : MonoBehaviour
 
     // Called whenever the level's goal is met
     public virtual void OnLevelGoalMet() { }
+
+    // Called when the level is failed
+    public virtual void OnLevelFailed() { }
 }

@@ -52,6 +52,12 @@ public class Walking : PhysicsSimulated
         isCurrentlyWalking = false;
     }
 
+    public override void OnLevelFailed()
+    {
+        base.OnLevelFailed();
+        isCurrentlyWalking = false;
+    }
+
     public bool isFalling()
     {
         return !Physics2D.BoxCast(transform.position, collisionSize, 0, -transform.up, collisionBoxY, groundLayer);
